@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nossa História 🎬</title>
+
+  <audio id="musica" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <style>
+    /* Estilo Cinemático: Fundo preto, tela cheia, sem barras de rolagem */
+    body {
+      margin: 0;
+      background-color: #050505;
+      color: #ffffff;
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Tela de Início */
+    #start-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      z-index: 20;
+    }
+
+    .play-btn {
+      background: transparent;
+      color: #fff;
+      border: 2px solid #fff;
+      padding: 15px 40px;
+      font-size: 18px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      z-index: 20;
+    }
+
+    .play-btn:hover {
+      background: #fff;
+      color: #050505;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+
+    /* Container do Filme */
+    #movie-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: none;
+    }
+
+    /* Partículas de Cinema (Neve/Luz) */
+    .particle {
+      position: absolute;
+      top: -10px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: fall linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10px) translateX(0); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(100vh) translateX(20px); opacity: 0; }
+    }
+
+    /* Textos que aparecem e somem (Legendas) */
+    .scene {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 800px;
+      text-align: center;
+      font-size: 28px;
+      font-style: italic;
+      letter-spacing: 1px;
+      line-height: 1.5;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+      z-index: 10;
+    }
+
+    /* Cena final com a foto */
+    #final-scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      opacity: 0;
+      transition: opacity 3s ease-in-out;
+      z-index: 10;
+      position: relative;
+    }
+
+    .movie-poster {
+      max-width: 90%;
+      max-height: 50vh;
+      border-radius: 4px;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+      margin-bottom: 30px;
+      border: 1px solid #333;
+    }
+
+    .final-text {
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-style: normal;
+    }
+
+    .question {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 40px;
+    }
+
+    /* Botões finais */
+    .actions {
+      display: flex;
+      gap: 20px;
+      z-index: 10;
+    }
+
+    .action-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: 1px solid white;
+      padding: 12px 35px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .action-btn:hover {
+      background: white;
+      color: black;
+    }
+
+    /* Efeito de letterbox (barras pretas em cima e embaixo) */
+    .letterbox-top, .letterbox-bottom {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 10vh;
+      background: #000;
+      z-index: 15;
+    }
+    .letterbox-top { top: 0; }
+    .letterbox-bottom { bottom: 0; }
+  </style>
+</head>
+<body>
+
+  <div id="start-screen">
+    <button class="play-btn" onclick="iniciarFilme()">Dar o Play 🎬</button>
+  </div>
+
+  <div id="movie-container">
+    <div class="letterbox-top"></div>
+    <div class="letterbox-bottom"></div>
+
+    <div class="scene" id="scene1">Dizem que a gente vive muitas vidas dentro da cidade...</div>
+    <div class="scene" id="scene2">Mas a minha melhor história começou naquela viatura.</div>
+    <div class="scene" id="scene3">O que era apenas um RP, virou o meu pensamento favorito fora da tela.</div>
+    <div class="scene" id="scene4">E ouvindo essa música, eu só tenho uma certeza...</div>
+    <div class="scene" id="scene5">Eu encontrei a minha parceira perfeita. ❤️</div>
+
+    <div id="final-scene" style="display: none;">
+      <img src="foto.jpg" alt="Nossa Cena" class="movie-poster" onerror="this.src='https://via.placeholder.com/600x400?text=Coloque+a+foto.jpg+na+pasta'">
+      <div class="final-text">I love you baby.</div>
+      <div class="question">Quer sair comigo? 👀</div>
+      
+      <div class="actions">
+        <button class="action-btn" onclick="alert('Corta pra cena do encontro! 🥰')">Sim!!! 😍</button>
+        <button class="action-btn" onclick="alert('Melhor final possível! ❤️')">Lógico! 🥰</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function criarParticulas() {
+      const container = document.getElementById('movie-container');
+      const quantidade = 60; // Quantidade de partículas na tela
+
+      for (let i = 0; i < quantidade; i++) {
+        let p = document.createElement('div');
+        p.className = 'particle';
+        
+        // Posição, tamanho e velocidade aleatórios
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.width = Math.random() * 4 + 1 + 'px';
+        p.style.height = p.style.width;
+        p.style.animationDuration = Math.random() * 5 + 3 + 's'; // Cai entre 3s e 8s
+        p.style.animationDelay = Math.random() * 5 + 's'; // Começa em tempos diferentes
+        
+        container.appendChild(p);
+      }
+    }
+
+    function iniciarFilme() {
+      // Some com o botão de início
+      document.getElementById('start-screen').style.display = 'none';
+      
+      // Mostra o container do filme
+      document.getElementById('movie-container').style.display = 'block';
+
+      // Cria o efeito de partículas no fundo
+      criarParticulas();
+
+      // Toca a música
+      let musica = document.getElementById("musica");
+      musica.volume = 0.4; 
+      musica.play().catch(e => console.log("Erro no áudio"));
+
+      // Inicia a sequência de cenas
+      rodarCenas();
+    }
+
+    async function rodarCenas() {
+      const cenas = ['scene1', 'scene2', 'scene3', 'scene4', 'scene5'];
+      
+      // Tempo de fade in/out das frases
+      for (let i = 0; i < cenas.length; i++) {
+        let cenaAtual = document.getElementById(cenas[i]);
+        
+        // Aparece
+        cenaAtual.style.opacity = 1;
+        await new Promise(r => setTimeout(r, 4000)); // Fica na tela por 4 segundos
+        
+        // Some
+        cenaAtual.style.opacity = 0;
+        await new Promise(r => setTimeout(r, 2000)); // Espera 2 segundos no escuro antes da próxima
+      }
+
+      // Prepara a cena final
+      const cenaFinal = document.getElementById('final-scene');
+      cenaFinal.style.display = 'flex';
+      
+      // Pequeno delay para a transição ficar suave e então a foto aparece
+      setTimeout(() => {
+        cenaFinal.style.opacity = 1;
+      }, 500);
+    }
+  </script>
+
+</body>
+</html>
